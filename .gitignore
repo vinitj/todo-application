@@ -1,0 +1,13 @@
+node_modules
+dist
+.npm
+build
+.DS_Store
+
+*.tmp
+# Logs
+logs
+*.log
+npm-debug.log*
+
+
