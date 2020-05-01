@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import MongoConnect from './mongo';
 
 import * as appRoutes from './routes';
-import logMiddleware from './middleware';
+import { logMiddleware, fetchRuntime } from './middleware';
 import favicon from 'serve-favicon';
 import toDoRouter from './api/todo';
 
@@ -16,8 +16,9 @@ const port = process.env.PORT || '8000';
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(favicon(path.join(__dirname, '../../assets/', 'favicon.ico')));
-app.use('/build', express.static(path.join(__dirname, '../../build')));
+app.use('/build/web', express.static(path.join(__dirname, '../../build/web')));
 app.use(logMiddleware);
+app.use(fetchRuntime);
 MongoConnect();
 
 const { indexRoute } = appRoutes;

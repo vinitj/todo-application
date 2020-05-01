@@ -9,5 +9,6 @@ build
 logs
 *.log
 npm-debug.log*
+access.log
 
 

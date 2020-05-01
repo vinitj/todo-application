@@ -1,39 +1,42 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Application from './components/app';
-import TimeBasedTask from './components/history';
-import NotFound from './components/notfound';
-import Layout from './components/layout';
 
-const items = [
+import Layout from './components/layout';
+import { getAllTodos } from './components/common/utils';
+import loadable from '@loadable/component';
+
+export const allRoutes = [
     {
         path: '/home',
         label: 'Home',
-        Component: Application,
+        Component: loadable(() => import('./components/app')),
+        fetchData: getAllTodos,
     },
     {
         path: '/history',
         label: 'History',
-        Component: TimeBasedTask,
+        Component: loadable(() => import('./components/history')),
     },
 ];
 
-const getRouters = (items) => {
+const getRouters = (items, ssrData) => {
     return items.map((item, index) => {
-        const { path, Component } = item;
+        const { path, Component, fetchData } = item;
         return (
             <Route key={`route-${index}`} path={path}>
-                {(props) => <Component path={props.match.path} />}
+                {(props) => <Component path={props.match.path} ssrData={fetchData ? ssrData : null} />}
             </Route>
         );
     });
 };
 
-const ReactRouter = () => {
+const ReactRouter = (props) => {
+    const { ssrData } = props;
+    const NotFound = loadable(() => import('./components/notfound'));
     return (
-        <Layout items={items}>
+        <Layout items={allRoutes}>
             <Switch>
-                {getRouters(items)}
+                {getRouters(allRoutes, ssrData)}
                 <Route component={NotFound} />
             </Switch>
         </Layout>

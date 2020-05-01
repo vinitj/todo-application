@@ -1,18 +1,17 @@
 import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 
 export const listDoneStyle = (isDone) => {
     if (isDone) {
         return css`
             text-decoration: line-through;
-            padding: 0px 10px;
         `;
     }
     return css`
         text-decoration: none;
-        padding: 0px 10px;
     `;
 };
 
-export const listWrapper = css`
-    padding: 10px 0;
+export const ListWrapper = styled.div`
+    padding: 2px 0;
 `;

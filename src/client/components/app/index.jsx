@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppWrapper, listRoot, ListWrapper } from './styled';
 import TodoItem from './todo-item';
 import AddItem from './add-item';
@@ -17,11 +17,14 @@ const getListItems = (items, onDoneToDo, onDeleteToDo) => {
 };
 
 const Application = (props) => {
+    const ssrData = Array.isArray(props.ssrData) ? props.ssrData : [];
     const [creating, setCreating] = useState(false);
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState(ssrData);
 
     useEffect(() => {
-        getAllTodos().then((data) => setItems(data));
+        if (ssrData.length === 0) {
+            getAllTodos().then((data) => setItems(data));
+        }
     }, []);
 
     const onDoneToDo = (_id, status) => {

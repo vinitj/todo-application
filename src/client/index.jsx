@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { hydrate, render } from 'react-dom';
 import AllRoutes from './react-router';
+
+import { loadableReady } from '@loadable/component';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -14,9 +16,12 @@ function Main() {
 
     return (
         <Router>
-            <AllRoutes />
+            <AllRoutes ssrData={window.__SSR_DATA__} />
         </Router>
     );
 }
 
-ReactDOM.render(<Main />, document.getElementById('app'));
+loadableReady(() => {
+    const root = document.getElementById('app');
+    render(<Main />, root);
+});

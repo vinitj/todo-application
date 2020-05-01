@@ -1,7 +1,4 @@
-import Assets from '../../webpack-assets.json';
-
-const render = (html, css) => {
-    const { js } = Assets.app;
+const render = (html, scriptTags, css, initialState) => {
     return `<html>
     <head>
         <title>Docker Tutorial </title>
@@ -11,7 +8,10 @@ const render = (html, css) => {
     </head>
     <body>
         <div id="app">${html}</div>
-        <script src="${js}"></script>
+        <script>
+            window.__SSR_DATA__ = ${initialState ? JSON.stringify(initialState) : '""'};
+        </script>
+        ${scriptTags}
     </body>
 </html>`;
 };
