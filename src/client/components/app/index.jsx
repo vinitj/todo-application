@@ -5,12 +5,21 @@ import AddItem from './add-item';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 
-import { getNewItems, getTempItem, makeCall, getAllTodos } from '../common/utils';
+import {
+    getNewItems,
+    getTempItem,
+    makeCall,
+    getAllTodos,
+} from '../common/utils';
 
 const getListItems = (items, onDoneToDo, onDeleteToDo) => {
     return items.map((item, index) => (
         <ListWrapper key={`todo-item-${index}`}>
-            <TodoItem {...item} onDoneToDo={onDoneToDo} onDeleteToDo={onDeleteToDo} />
+            <TodoItem
+                {...item}
+                onDoneToDo={onDoneToDo}
+                onDeleteToDo={onDeleteToDo}
+            />
             {index !== items.length - 1 ? <Divider /> : null}
         </ListWrapper>
     ));
@@ -22,14 +31,15 @@ const Application = (props) => {
     const [items, setItems] = useState(ssrData);
 
     useEffect(() => {
-        if (ssrData.length === 0) {
-            getAllTodos().then((data) => setItems(data));
-        }
-    }, []);
+        setItems(ssrData);
+    }, [ssrData]);
 
     const onDoneToDo = (_id, status) => {
         setItems(getNewItems(items, 'update', _id, { completed: status }));
-        makeCall(`/rest/list/${_id}`, { method: 'PUT', body: JSON.stringify({ completed: status }) }).catch((error) => {
+        makeCall(`/rest/list/${_id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ completed: status }),
+        }).catch((error) => {
             // revert
             setItems(getNewItems(items, 'update', _id, { completed: !status }));
             console.error('Error while updating:', error);
@@ -51,7 +61,10 @@ const Application = (props) => {
         const newListWithTemp = [newTempTodo, ...items];
         setItems(newListWithTemp);
         setCreating(true);
-        makeCall('/rest/list/new', { method: 'POST', body: JSON.stringify({ item }) })
+        makeCall('/rest/list/new', {
+            method: 'POST',
+            body: JSON.stringify({ item }),
+        })
             .then((data) => {
                 const newList = [data, ...oldItems];
                 setCreating(false);

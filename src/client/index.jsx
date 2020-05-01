@@ -16,7 +16,10 @@ function Main() {
 
     return (
         <Router>
-            <AllRoutes ssrData={window.__SSR_DATA__} />
+            <AllRoutes
+                ssrData={window.__SSR_DATA__}
+                ssrPath={window.__SSR_PATH__}
+            />
         </Router>
     );
 }

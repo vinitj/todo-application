@@ -9,7 +9,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 
-import { AppWrapper, heading, ListWrapper, listRoot, listWrapper } from './styled';
+import {
+    AppWrapper,
+    heading,
+    ListWrapper,
+    listRoot,
+    listWrapper,
+} from './styled';
 import { getAllTodos } from '../common/utils';
 import { getFilteredItems, getUpdatedTime } from './utils';
 
@@ -17,7 +23,10 @@ const getListItems = (items) => {
     return items.map((item, index) => (
         <ListWrapper key={`todo-item-${index}`}>
             <ListItem css={listWrapper}>
-                <ListItemText primary={item.text} secondary={`Updated At: ${getUpdatedTime(item.updatedAt)}`} />
+                <ListItemText
+                    primary={item.text}
+                    secondary={`Updated At: ${getUpdatedTime(item.updatedAt)}`}
+                />
             </ListItem>
             {index !== items.length - 1 ? <Divider /> : null}
         </ListWrapper>
@@ -25,12 +34,13 @@ const getListItems = (items) => {
 };
 
 const History = (props) => {
+    const ssrData = Array.isArray(props.ssrData) ? props.ssrData : [];
     const [expanded, setExpanded] = useState(false);
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState(ssrData);
 
     useEffect(() => {
-        getAllTodos().then((data) => setItems(data));
-    }, []);
+        setItems(ssrData);
+    }, [ssrData]);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -44,23 +54,38 @@ const History = (props) => {
 
     return (
         <AppWrapper>
-            <ExpansionPanel expanded={expanded === 'completed'} onChange={handleChange('completed')}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} id="completed">
+            <ExpansionPanel
+                expanded={expanded === 'completed'}
+                onChange={handleChange('completed')}
+            >
+                <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    id="completed"
+                >
                     <Typography css={heading}>Completed Task</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <List css={listRoot}>{allCompletedItems}</List>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
-            <ExpansionPanel expanded={expanded === 'pending'} onChange={handleChange('pending')}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} id="pending">
+            <ExpansionPanel
+                expanded={expanded === 'pending'}
+                onChange={handleChange('pending')}
+            >
+                <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    id="pending"
+                >
                     <Typography css={heading}>Pending Task</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <List css={listRoot}>{allPendingItems}</List>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
-            <ExpansionPanel expanded={expanded === 'all'} onChange={handleChange('all')}>
+            <ExpansionPanel
+                expanded={expanded === 'all'}
+                onChange={handleChange('all')}
+            >
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} id="all">
                     <Typography css={heading}>All Task</Typography>
                 </ExpansionPanelSummary>

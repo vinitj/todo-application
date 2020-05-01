@@ -1,4 +1,4 @@
-const render = (html, scriptTags, css, initialState) => {
+const render = (html, scriptTags, css, initialState, match) => {
     return `<html>
     <head>
         <title>Docker Tutorial </title>
@@ -9,7 +9,12 @@ const render = (html, scriptTags, css, initialState) => {
     <body>
         <div id="app">${html}</div>
         <script>
-            window.__SSR_DATA__ = ${initialState ? JSON.stringify(initialState) : '""'};
+            window.__SSR_DATA__ = ${
+                initialState ? JSON.stringify(initialState) : null
+            };
+        </script>
+        <script>
+            window.__SSR_PATH__ = ${match ? JSON.stringify(match.path) : null};
         </script>
         ${scriptTags}
     </body>
