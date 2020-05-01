@@ -32,10 +32,10 @@ const getDataPromises = (path) => {
 };
 
 const renderRouteMarkup = (req, res, initialState = undefined, route) => {
-    const nodeExtractor = new ChunkExtractor({ statsFile: nodeStats, entrypoints: ['app'] });
-    const webExtractor = new ChunkExtractor({ statsFile: webStats, entrypoints: ['app'] });
+    const nodeExtractor = new ChunkExtractor({ statsFile: nodeStats, entrypoints: ['main'] });
+    const webExtractor = new ChunkExtractor({ statsFile: webStats, entrypoints: ['main'] });
 
-    const { default: ReactRouterMainApp } = nodeExtractor.requireEntrypoint('app');
+    const { default: ReactRouterMainApp } = nodeExtractor.requireEntrypoint('main');
 
     const sheets = new ServerStyleSheets();
 

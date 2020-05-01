@@ -19,6 +19,9 @@ const getWebpackConfig = (target) => ({
         tls: 'empty',
         console: true,
     },
+    devServer: {
+        contentBase: './build/' + target,
+    },
     output: {
         path: path.resolve(__dirname, './build/', target),
         filename: '[name]-[contenthash].bundle.js',
@@ -28,7 +31,6 @@ const getWebpackConfig = (target) => ({
         libraryTarget: target === 'node' ? 'commonjs2' : undefined,
     },
     optimization: {
-        //runtimeChunk: 'single',
         moduleIds: 'hashed',
         splitChunks: {
             cacheGroups: {

@@ -1,0 +1,10 @@
+{
+    "ignore": ["dist", "build"],
+    "execMap": {
+        "js": "babel-node"
+    },
+    "env": {
+        "NODE_ENV": "development"
+    },
+    "ext": "js,json,jsx"
+}
