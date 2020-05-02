@@ -1,16 +1,9 @@
-const MongoConfig = (env) => {
-    if (env === 'production') {
-        return {
-            host: 'localhost',
-            port: 27017,
-            instance: 'prod_todo',
-        };
-    }
+const MongoConfig = () => {
     return {
-        host: 'localhost',
-        port: 27017,
-        instance: 'todo',
+        host: process.env.MONGO_DB_HOST || 'localhost',
+        port: process.env.MONGO_DB_PORT || 27017,
+        instance: process.env.MONGO_DB_DATABASE || 'todo',
     };
 };
 
-export default MongoConfig(process.env.NODE_ENV);
+export default MongoConfig();

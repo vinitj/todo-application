@@ -1,0 +1,56 @@
+version: '3.4'
+
+services:
+    webdev:
+        build:
+            context: .
+            target: dev
+        env_file: ./.env
+        environment:
+            MONGO_DB_HOST: 'mongo'
+            MONGO_DB_PORT: 27017
+            MONGO_DB_DATABASE: 'todo'
+            NODE_ENV: 'development'
+        command: nodemon --inspect=0.0.0.0:${DEBUG_PORT} src/server/index.js
+        depends_on:
+            - mongo
+        ports:
+            - ${WEBAPP_PORT}:8080
+            - ${DEBUG_PORT}:5858
+        volumes:
+            - '.:/home/node/app'
+            - '/home/node/app/node_modules'
+            - '/home/node/app/build'
+            - '/home/node/app/dist'
+        networks:
+            - todo-application
+
+    webprod:
+        build:
+            context: .
+            target: prod
+        image: todo-application:latest
+        env_file: ./.env
+        environment:
+            MONGO_DB_HOST: 'mongo'
+            MONGO_DB_PORT: 27017
+            MONGO_DB_DATABASE: 'prod_todo'
+            NODE_ENV: 'production'
+        depends_on:
+            - mongo
+        ports:
+            - ${WEBAPP_PORT}:8080
+        networks:
+            - todo-application
+
+    mongo:
+        image: mongo:3
+        networks:
+            - todo-application
+        volumes:
+            - '/data/docker-mongodb:/data/db'
+        ports:
+            - '27017-27019:27017'
+
+networks:
+    todo-application:

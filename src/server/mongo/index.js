@@ -8,20 +8,22 @@ const MongoConnect = async () => {
 
     db.on('error', (err) => {
         console.error('Unable to connect to Mongo', err);
-        reject(err);
     });
     db.once('open', () => {
         mongoDB = db;
     });
 
-    await mongoose.connect(`mongodb://${config.host}:${config.port}/${config.instance}`, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        auto_reconnect: true,
-        socketTimeoutMS: 480000,
-        keepAlive: 300000,
-        useFindAndModify: false,
-    });
+    await mongoose.connect(
+        `mongodb://${config.host}:${config.port}/${config.instance}`,
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            auto_reconnect: true,
+            socketTimeoutMS: 480000,
+            keepAlive: 300000,
+            useFindAndModify: false,
+        },
+    );
 
     mongoDB.on('disconnected', () => {
         console.log('[CRITICAL] Mongo got disconnected ');

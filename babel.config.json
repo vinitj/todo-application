@@ -8,5 +8,11 @@
         ["emotion", { "sourceMap": true }],
         "@babel/plugin-syntax-dynamic-import",
         "@loadable/babel-plugin"
-    ]
+    ],
+    "env": {
+        "development": {
+            "sourceMaps": true,
+            "retainLines": true
+        }
+    }
 }

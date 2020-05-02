@@ -7,10 +7,10 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "clean:server": "rm -rf dist",
         "compile": "npm run clean:server && babel src -d dist",
-        "build:prod": "npm run compile && NODE_ENV=production webpack",
+        "build:prod": "NODE_ENV=production webpack",
         "build:dev": "NODE_ENV=development webpack ",
         "start:prod": "node dist/server/index.js",
-        "start": "nodemon src/server/index.js"
+        "start": "nodemon --inspect=5858 src/server/index.js"
     },
     "keywords": [
         "container"

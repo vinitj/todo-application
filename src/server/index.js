@@ -16,7 +16,7 @@ import toDoRouter from './api/todo';
 import config from '../../webpack.config';
 
 const app = express();
-const port = process.env.PORT || '8000';
+const port = process.env.WEBAPP_PORT || '8000';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -33,7 +33,10 @@ if (process.env.NODE_ENV !== 'production') {
             logLevel: 'silent',
             publicPath: '/build/web',
             writeToDisk(filePath) {
-                return /build\/node\//.test(filePath) || /loadable-stats/.test(filePath);
+                return (
+                    /build\/node\//.test(filePath) ||
+                    /loadable-stats/.test(filePath)
+                );
             },
         }),
     );

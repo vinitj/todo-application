@@ -62,12 +62,22 @@ const Layout = (props) => {
     return (
         <Box p={10}>
             <Paper elevation={3} style={{ width: 600 }}>
-                <AppBar color="primary" position="static" style={{ height: 64 }}>
+                <AppBar
+                    color="primary"
+                    position="static"
+                    style={{ height: 64 }}
+                >
                     <Toolbar style={{ height: 64 }}>
-                        <Typography color="inherit">My Docker Example</Typography>
+                        <Typography color="inherit">
+                            My Docker Example
+                        </Typography>
                     </Toolbar>
                 </AppBar>
-                <AppBar color="transparent" position="static" style={{ height: 48 }}>
+                <AppBar
+                    color="transparent"
+                    position="static"
+                    style={{ height: 48 }}
+                >
                     <Tabs
                         variant="standard"
                         value={value}
