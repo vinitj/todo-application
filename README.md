@@ -60,6 +60,8 @@ docker-compose up webdev
 
 This will by default support hot reloading via nodemon and webpack. Also mongodb default data path is /data/docker-mongodb. Feel free to change it in docker-compose.yml
 
+This also supports remote debugging via vscode (Attach to Todo Application Attach)
+
 for prod environment use
 
 ```sh
@@ -99,9 +101,40 @@ docker run  -p 8080:8080 --env-file ./.env --link mongo:mongo todo-application
 
 But in above case change MONGO_DB_HOST (env file) value to container IP which can be found via `docker inspect mongo | grep IPAddress`
 
-#### Kubernetes + Google Cloud
+#### Kubernetes + Kompose
 
-Will add todo with kubernetes
+#####Change env port to something else as 8080 is used by kubectl
+
+Use file docker-compose-dev.yml for kompose deplpyment
+
+```sh
+mkdir kubedir
+kompose --file docker-compose-dev.yml convert -o kubedir
+kubectl apply -f kubedir/
+```
+
+```sh
+kubectl get all
+```
+
+Get all will return pods, svc,deployment etc. To check for logs
+`kubectl logs pod/*` from above command
+
+#####Kompose expects kubectl to be listening on port 8080. So run `kubectl proxy --port=8080 &` and leave that running in background
+
+for cleanup just do
+
+```sh
+kompose --file docker-compose-dev.yml down
+kubectl delete all --all
+```
+
+if for some reason kompose up failed due to configmap check in kubernetes
+
+```sh
+kubectl get configmap # get Name and delete from next command
+kubectl delete configmap env
+```
 
 ### Todos
 

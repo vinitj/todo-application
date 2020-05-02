@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+    webprod:
+        image: vinitjain16/sample-todo:latest
+        env_file: ./.env
+        environment:
+            MONGO_DB_HOST: 'mongo'
+            MONGO_DB_PORT: 27017
+            MONGO_DB_DATABASE: 'prod_todo'
+            NODE_ENV: 'production'
+        labels:
+            kompose.service.type: LoadBalancer
+        depends_on:
+            - mongo
+        ports:
+            - ${WEBAPP_PORT}:3000
+        networks:
+            - todo-application
+
+    mongo:
+        image: mongo:3
+        networks:
+            - todo-application
+        volumes:
+            - '/data/docker-mongodb:/data/db'
+        ports:
+            - '27017'
+
+networks:
+    todo-application:

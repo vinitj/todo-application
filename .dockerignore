@@ -13,5 +13,5 @@ npm-debug.log*
 access.log
 .gitignore
 .vscode
-
+kubedir
 
