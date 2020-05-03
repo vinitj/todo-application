@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import config from './config';
-let _db;
 
 const MongoConnect = async () => {
     const db = mongoose.connection;

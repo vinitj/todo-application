@@ -2,7 +2,9 @@ export const getNewItems = (items, operation, _id, updates) => {
     if (operation === 'delete') {
         return items.filter((item) => item._id !== _id);
     }
-    return items.map((item) => (item._id === _id ? { ...item, ...updates } : item));
+    return items.map((item) =>
+        item._id === _id ? { ...item, ...updates } : item,
+    );
 };
 
 export const getTempItem = (text, completed) => {

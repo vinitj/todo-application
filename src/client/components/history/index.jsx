@@ -16,7 +16,6 @@ import {
     listRoot,
     listWrapper,
 } from './styled';
-import { getAllTodos } from '../common/utils';
 import { getFilteredItems, getUpdatedTime } from './utils';
 
 const getListItems = (items) => {

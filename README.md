@@ -86,6 +86,10 @@ and latest are the tagnames (need not be same for image and repo)
 First create a network, pull mongo image, start it in detach mode and bind volume
 then run todo application with same network
 
+```code
+docker pull <Docker Hub Id>/sample-todo:latest
+```
+
 ```sh
 docker network create --driver=bridge mongo-net
 docker run -d --network mongo-net -p 27017:27017 --name mongo --mount type=bind,src=/data/docker-mongodb/,target=/data/db mongo:3

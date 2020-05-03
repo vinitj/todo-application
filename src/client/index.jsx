@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { hydrate, render } from 'react-dom';
+import { render } from 'react-dom';
 import AllRoutes from './react-router';
 
 import { loadableReady } from '@loadable/component';

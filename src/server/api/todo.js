@@ -18,7 +18,7 @@ toDoRouter.param('id', (req, res, next, id) => {
 toDoRouter
     .route('/lists')
     .all(callLog)
-    .get((req, res, next) => {
+    .get((req, res) => {
         ToDoItem.find({}, null, { sort: { createdAt: -1 } }, (error, todos) => {
             if (error) {
                 return res.status(500).send({ error });
@@ -30,14 +30,19 @@ toDoRouter
 toDoRouter
     .route('/list/:id')
     .all(callLog)
-    .get((req, res, next) => {
+    .get((req, res) => {
         res.json({ id: req.todo.id });
     })
-    .post(function (req, res, next) {
+    .post(function (req, res) {
         const text = req.body ? req.body.item || null : null;
         if (text && text.trim() !== '') {
             const time = Date.now();
-            const newItem = new ToDoItem({ text, completed: false, createdAt: time, updatedAt: time });
+            const newItem = new ToDoItem({
+                text,
+                completed: false,
+                createdAt: time,
+                updatedAt: time,
+            });
             newItem.save((error, item) => {
                 if (error) {
                     return res.status(500).send({ error });
@@ -48,9 +53,9 @@ toDoRouter
             res.status(500).send({ error: 'Text should be present' });
         }
     })
-    .put((req, res, next) => {
+    .put((req, res) => {
         if (req.body && req.todo.id) {
-            const { _id, completed, text } = req.body;
+            const { completed, text } = req.body;
             return ToDoItem.findOneAndUpdate(
                 { _id: req.todo.id },
                 { completed, text, updatedAt: Date.now() },
@@ -65,9 +70,9 @@ toDoRouter
         }
         res.status(500).send({ error: 'Body should be present' });
     })
-    .delete((req, res, next) => {
+    .delete((req, res) => {
         if (req.todo.id) {
-            return ToDoItem.deleteOne({ _id: req.todo.id }, (error, item) => {
+            return ToDoItem.deleteOne({ _id: req.todo.id }, (error) => {
                 if (error) {
                     return res.status(500).send({ error });
                 }

@@ -51,27 +51,41 @@ const server = app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
 });
 
-process.on('SIGINT', function () {
-    console.info('SIGINT signal received.');
-
+const shutdownProcess = (cb) => {
     server.close(function () {
         console.log('Http server closed.');
         mongoose.connection.close(false, () => {
             console.log('MongoDb connection closed.');
-            process.exit(0);
+            cb();
         });
+    });
+};
+
+process.on('SIGINT', function () {
+    console.error('SIGINT signal received.');
+    shutdownProcess(() => {
+        process.exit(0);
     });
 });
 
 process.on('SIGTERM', () => {
-    console.info('SIGTERM signal received.');
-    server.close(function () {
-        console.log('Http server closed.');
-        mongoose.connection.close(false, () => {
-            console.log('MongoDb connection closed.');
-            process.exit(0);
-        });
+    console.error('SIGTERM signal received.');
+    shutdownProcess(() => {
+        process.exit(0);
     });
 });
 
+process
+    .on('unhandledRejection', (reason, p) => {
+        console.error(reason, 'Unhandled Rejection at Promise', p);
+        shutdownProcess(() => {
+            process.exit(0);
+        });
+    })
+    .on('uncaughtException', (err) => {
+        console.error(err, 'Uncaught Exception thrown');
+        shutdownProcess(() => {
+            process.exit(0);
+        });
+    });
 module.exports = app;

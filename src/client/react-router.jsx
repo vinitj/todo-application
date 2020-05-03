@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import loadable from '@loadable/component';
 
@@ -8,7 +8,7 @@ import { View } from './routes';
 
 const getRouters = (items, ssrData, ssrPath) => {
     return items.map((item, index) => {
-        const { path, Component, fetchData } = item;
+        const { path, fetchData } = item;
         return (
             <Route key={`route-${index}`} path={path}>
                 {(props) => (

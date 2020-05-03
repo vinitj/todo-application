@@ -38,7 +38,10 @@ const AddItem = (props) => {
             </Grid>
             <Grid xs={2} md={1} item>
                 <AddCircleIcon
-                    style={{ color: green[500], cursor: creating ? 'not-allowed' : 'pointer' }}
+                    style={{
+                        color: green[500],
+                        cursor: creating ? 'not-allowed' : 'pointer',
+                    }}
                     onClick={onAdd}
                 />
             </Grid>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-const NotFound = (props) => {
+const NotFound = () => {
     return (
         <Route
             render={({ staticContext }) => {

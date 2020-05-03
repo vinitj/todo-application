@@ -3,8 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import render from './render';
 import { StaticRouter, matchPath } from 'react-router-dom';
 import allRoutes from '../client/routes';
-import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
-import runtime from './runtime/fetch';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 import { ChunkExtractor } from '@loadable/server';
 import path from 'path';
 
