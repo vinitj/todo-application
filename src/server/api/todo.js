@@ -1,12 +1,8 @@
 import express from 'express';
 import ToDoItem from '../model/todo';
+import { logMiddleware } from '../middleware';
 
 const toDoRouter = express.Router();
-
-function callLog(req, res, next) {
-    console.log(`Api Call - ${req.url} is called at ${Date.now()}`);
-    next();
-}
 
 toDoRouter.param('id', (req, res, next, id) => {
     req.todo = {
@@ -17,7 +13,7 @@ toDoRouter.param('id', (req, res, next, id) => {
 
 toDoRouter
     .route('/lists')
-    .all(callLog)
+    .all(logMiddleware)
     .get((req, res) => {
         ToDoItem.find({}, null, { sort: { createdAt: -1 } }, (error, todos) => {
             if (error) {
@@ -29,7 +25,7 @@ toDoRouter
 
 toDoRouter
     .route('/list/:id')
-    .all(callLog)
+    .all(logMiddleware)
     .get((req, res) => {
         res.json({ id: req.todo.id });
     })

@@ -25,16 +25,16 @@ const MongoConnect = async () => {
     );
 
     mongoDB.on('disconnected', () => {
-        console.log('[CRITICAL] Mongo got disconnected ');
+        console.error('[CRITICAL] Mongo got disconnected ');
     });
     mongoDB.on('connected', () => {
-        console.log('Mongo got Connected back successfully ');
+        console.error('Mongo got Connected back successfully ');
     });
     mongoDB.on('close', () => {
-        console.log('[CRITICAL] Connection Closed');
+        console.error('[CRITICAL] Connection Closed');
     });
     mongoDB.on('reconnected', () => {
-        console.log('Mongo got reconnected back successfully ');
+        console.error('Mongo got reconnected back successfully ');
     });
 };
 

@@ -1,14 +1,21 @@
 const path = require('path');
 const LoadablePlugin = require('@loadable/webpack-plugin');
-const development = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-const nodeExternals = require('webpack-node-externals');
+const development =
+    !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+const nodeExternals = require('webpack-node-externals'); // To skip bundling node_modules in case target is node
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
-const production = process.env.NODE_ENV === 'production';
 
 const getWebpackConfig = (target) => ({
     entry: {
-        main: target === 'node' ? './src/client/react-router.jsx' : './src/client/index.jsx',
+        app1:
+            target === 'node'
+                ? './src/client/app1/node.jsx'
+                : './src/client/app1/index.jsx',
+        app2:
+            target === 'node'
+                ? './src/client/app2/node.jsx'
+                : './src/client/app2/index.jsx',
+        generic: './src/client/generic/index.jsx',
     },
     mode: development ? 'development' : 'production',
     target,
@@ -45,7 +52,7 @@ const getWebpackConfig = (target) => ({
     resolve: {
         extensions: ['.js', '.jsx'],
     },
-    externals: target === 'node' ? ['@loadable/component', nodeExternals()] : undefined,
+    externals: target === 'node' ? [nodeExternals()] : undefined,
     module: {
         rules: [
             {
@@ -54,11 +61,6 @@ const getWebpackConfig = (target) => ({
                 use: {
                     loader: 'babel-loader',
                 },
-            },
-            {
-                test: /\.(css)$/,
-                exclude: /node_modules/,
-                use: ['style-loader', 'css-loader'],
             },
         ],
     },

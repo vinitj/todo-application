@@ -1,42 +1,21 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import render from './render';
-import { StaticRouter, matchPath } from 'react-router-dom';
-import allRoutes from '../client/routes';
+import { StaticRouter } from 'react-router-dom';
+import { getAppEntryPointBasedOnURL, getDataPromises } from './utils';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 import { ChunkExtractor } from '@loadable/server';
 import path from 'path';
 
 const nodeStats = path.resolve(
     __dirname,
-    '../../build/node/loadable-stats.json',
+    '../../../build/node/loadable-stats.json',
 );
 
-const webStats = path.resolve(__dirname, '../../build/web/loadable-stats.json');
-
-const getDataPromises = (path) => {
-    const allDataPromises = [];
-    let i = 0;
-    let match = null;
-    for (i = 0; i < allRoutes.length; i++) {
-        match = matchPath(path, allRoutes[i]);
-        if (match) {
-            if (allRoutes[i].fetchData) {
-                if (Array.isArray(allRoutes[i].fetchData)) {
-                    allDataPromises.push(
-                        ...allRoutes[i].fetchData.map((dataCalls) =>
-                            dataCalls(),
-                        ),
-                    );
-                } else {
-                    allDataPromises.push(allRoutes[i].fetchData());
-                }
-            }
-            break;
-        }
-    }
-    return { promises: allDataPromises, route: i, match };
-};
+const webStats = path.resolve(
+    __dirname,
+    '../../../build/web/loadable-stats.json',
+);
 
 const renderRouteMarkup = (
     req,
@@ -45,17 +24,18 @@ const renderRouteMarkup = (
     route,
     match,
 ) => {
+    const entryPoint = getAppEntryPointBasedOnURL(match ? match.path : null);
     const nodeExtractor = new ChunkExtractor({
         statsFile: nodeStats,
-        entrypoints: ['main'],
+        entrypoints: [entryPoint],
     });
     const webExtractor = new ChunkExtractor({
         statsFile: webStats,
-        entrypoints: ['main'],
+        entrypoints: [entryPoint],
     });
 
     const { default: ReactRouterMainApp } = nodeExtractor.requireEntrypoint(
-        'main',
+        entryPoint,
     );
 
     const sheets = new ServerStyleSheets();
@@ -85,7 +65,14 @@ const renderRouteMarkup = (
     const css = sheets.toString();
 
     res.set('content-type', 'text/html');
-    res.send(render(finalJsx, scriptTags, css, ssrData, match));
+
+    const renderedHTML = render(finalJsx, scriptTags, css, ssrData, match);
+
+    if (context.status === '404') {
+        return res.status(404).send(renderedHTML);
+    }
+
+    res.status(200).send(renderedHTML);
 };
 
 export const indexRoute = function (req, res) {

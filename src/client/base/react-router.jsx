@@ -1,10 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import loadable from '@loadable/component';
+import getGenericRoutes from '../generic';
 
-import Layout from './components/layout';
-import allRoutes from './routes';
-import { View } from './routes';
+import View from './view';
 
 const getRouters = (items, ssrData, ssrPath) => {
     return items.map((item, index) => {
@@ -25,17 +23,13 @@ const getRouters = (items, ssrData, ssrPath) => {
     });
 };
 
-const NotFound = loadable(() => import('./components/notfound'));
-
 const ReactRouter = (props) => {
-    const { ssrData, ssrPath } = props;
+    const { ssrData, ssrPath, allRoutes } = props;
     return (
-        <Layout items={allRoutes}>
-            <Switch>
-                {getRouters(allRoutes, ssrData, ssrPath)}
-                <Route component={NotFound} />
-            </Switch>
-        </Layout>
+        <Switch>
+            {getRouters(allRoutes, ssrData, ssrPath)}
+            {getGenericRoutes()}
+        </Switch>
     );
 };
 export default ReactRouter;

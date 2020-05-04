@@ -48,14 +48,14 @@ app.use('/rest', toDoRouter);
 app.get('/*', indexRoute);
 
 const server = app.listen(port, () => {
-    console.log(`Listening to requests on http://localhost:${port}`);
+    console.info(`Listening to requests on http://localhost:${port}`);
 });
 
 const shutdownProcess = (cb) => {
     server.close(function () {
-        console.log('Http server closed.');
+        console.info('Http server closed.');
         mongoose.connection.close(false, () => {
-            console.log('MongoDb connection closed.');
+            console.info('MongoDb connection closed.');
             cb();
         });
     });
