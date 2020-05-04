@@ -20,6 +20,7 @@ const allRoutes = [
         path: '/history',
         label: 'History',
         Component: HistoryComponent,
+        fetchData: getAllTodos, // If we remove this component has to handle this accordingly
     },
 ];
 

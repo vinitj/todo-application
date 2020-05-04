@@ -45,13 +45,18 @@ $ yarn start:prod
 Todo uses Nodemon + Webpack for fast developing.
 Make a change in your file and instantaneously see your updates!
 
+\*\*Each folder within client can act as separate app and can be ssred or not based on loadable component parameter ({ssr: false}) and not passing fetchData respectively.
+
+Above is pretty cool in the sense that each app can have its own layout, routes etc without interfering with others. (Just need to add an entry in webpack config to support multiple apps)
+Code splitting within app works automagically without making any webpack related changes
+
 ### Docker
 
 Todo is very easy to install and deploy in a Docker container.
 
 By default, the Docker will expose port 8080 (via `.env` file), so change this within the `.env` if necessary. When ready, simply use the Dockerfile to build the image.
 
-For development environment use -
+_For development environment use -_
 
 ```sh
 cd todo
@@ -62,7 +67,10 @@ This will by default support hot reloading via nodemon and webpack. Also mongodb
 
 This also supports remote debugging via vscode (Attach to Todo Application Attach)
 
-for prod environment use
+If somehow container unable to build use
+`docker-compose up --build webdev`
+
+_for prod environment use -_
 
 ```sh
 docker-compose up webprod
