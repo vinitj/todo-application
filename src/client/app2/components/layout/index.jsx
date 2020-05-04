@@ -7,7 +7,6 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import TabPanel from './tabpanel';
 import Box from '@material-ui/core/Box';
-// import { paperCss } from './styled';
 import { useHistory, useLocation } from 'react-router-dom';
 
 const getTabValue = (items, path) => {
@@ -69,7 +68,7 @@ const Layout = (props) => {
                 >
                     <Toolbar style={{ height: 64 }}>
                         <Typography color="inherit">
-                            My Docker Example
+                            My Docker Example App2 Layout
                         </Typography>
                     </Toolbar>
                 </AppBar>
